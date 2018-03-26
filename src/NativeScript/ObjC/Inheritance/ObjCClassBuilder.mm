@@ -132,8 +132,8 @@ static void addMethodToClass(ExecState* execState, Class klass, JSCell* method, 
 
     const TypeEncoding* encodings = meta->encodings()->first();
 
-    JSCell* returnTypeCell = globalObject->typeFactory()->parseType(globalObject, encodings, false);
-    const WTF::Vector<JSCell*> parameterTypesCells = globalObject->typeFactory()->parseTypes(globalObject, encodings, meta->encodings()->count - 1, false);
+    JSCell* returnTypeCell = globalObject->typeFactory()->parseType(globalObject, encodings);
+    const WTF::Vector<JSCell*> parameterTypesCells = globalObject->typeFactory()->parseTypes(globalObject, encodings, meta->encodings()->count - 1);
 
     ObjCMethodCallback* callback = ObjCMethodCallback::create(execState->vm(), globalObject, globalObject->objCMethodCallbackStructure(), method, returnTypeCell, parameterTypesCells);
     gcProtect(callback);
@@ -352,8 +352,8 @@ void ObjCClassBuilder::addProperty(ExecState* execState, const Identifier& name,
             }
 
             const TypeEncoding* encodings = getter->encodings()->first();
-            JSCell* returnType = globalObject->typeFactory()->parseType(globalObject, encodings, false);
-            const WTF::Vector<JSCell*> parameterTypes = globalObject->typeFactory()->parseTypes(globalObject, encodings, getter->encodings()->count - 1, false);
+            JSCell* returnType = globalObject->typeFactory()->parseType(globalObject, encodings);
+            const WTF::Vector<JSCell*> parameterTypes = globalObject->typeFactory()->parseTypes(globalObject, encodings, getter->encodings()->count - 1);
 
             ObjCMethodCallback* getterCallback = ObjCMethodCallback::create(vm, globalObject, globalObject->objCMethodCallbackStructure(), propertyDescriptor.getter().asCell(), returnType, parameterTypes);
             gcProtect(getterCallback);
@@ -370,8 +370,8 @@ void ObjCClassBuilder::addProperty(ExecState* execState, const Identifier& name,
             }
 
             const TypeEncoding* encodings = setter->encodings()->first();
-            JSCell* returnType = globalObject->typeFactory()->parseType(globalObject, encodings, false);
-            const WTF::Vector<JSCell*> parameterTypes = globalObject->typeFactory()->parseTypes(globalObject, encodings, setter->encodings()->count - 1, false);
+            JSCell* returnType = globalObject->typeFactory()->parseType(globalObject, encodings);
+            const WTF::Vector<JSCell*> parameterTypes = globalObject->typeFactory()->parseTypes(globalObject, encodings, setter->encodings()->count - 1);
 
             ObjCMethodCallback* setterCallback = ObjCMethodCallback::create(vm, globalObject, globalObject->objCMethodCallbackStructure(), propertyDescriptor.setter().asCell(), returnType, parameterTypes);
             gcProtect(setterCallback);

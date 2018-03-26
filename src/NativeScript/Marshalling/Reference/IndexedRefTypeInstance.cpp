@@ -17,6 +17,7 @@
 
 namespace NativeScript {
 using namespace JSC;
+typedef ReferenceTypeInstance Base;
 
 const ClassInfo IndexedRefTypeInstance::s_info = { "IndexedRefTypeInstance", &Base::s_info, nullptr, nullptr, CREATE_METHOD_TABLE(IndexedRefTypeInstance) };
 
@@ -96,15 +97,7 @@ void IndexedRefTypeInstance::finishCreation(JSC::VM& vm, JSCell* innerType) {
     this->_ffiTypeMethodTable.read = &read;
     this->_ffiTypeMethodTable.write = &write;
 
-    this->_ffiTypeMethodTable.canConvert = &canConvert;
-    this->_ffiTypeMethodTable.encode = &encode;
-
     this->_innerType.set(vm, this, innerType);
-}
-
-bool IndexedRefTypeInstance::canConvert(ExecState* execState, const JSValue& value, JSCell* buffer) {
-    JSC::VM& vm = execState->vm();
-    return value.isUndefinedOrNull() || value.inherits(vm, IndexedRefInstance::info()) || value.inherits(vm, PointerInstance::info());
 }
 
 void IndexedRefTypeInstance::visitChildren(JSC::JSCell* cell, JSC::SlotVisitor& visitor) {
