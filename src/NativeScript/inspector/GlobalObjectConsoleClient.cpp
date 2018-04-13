@@ -80,24 +80,6 @@ static WTF::String getStringRepresentationOfObject(JSC::ExecState* exec, JSC::JS
     return value.toWTFString(exec);
 }
 
-static WTF::String getDirMessageForObject(JSC::ExecState* exec, JSC::JSValue object) {
-    JSC::JSObject* jsObject = object.getObject();
-    JSC::PropertyNameArray propertyNames(exec, JSC::PropertyNameMode::Strings);
-    JSC::EnumerationMode mode;
-    jsObject->getPropertyNames(jsObject, exec, propertyNames, mode);
-    StringBuilder output;
-
-    for (JSC::PropertyName propertyName : propertyNames) {
-        JSC::JSValue value = object.get(exec, propertyName);
-        output.append(WTF::String(propertyName.uid()));
-        output.append(": ");
-        output.append(getStringRepresentationOfObject(exec, value));
-        output.append("\n");
-    }
-
-    return output.toString();
-}
-
 bool GlobalObjectConsoleClient::logToSystemConsole() {
     return sLogToSystemConsole;
 }
@@ -215,8 +197,8 @@ WTF::String GlobalObjectConsoleClient::getDirMessage(JSC::ExecState* exec, JSC::
     if (argument.isObject()) {
         output.append("\n");
         output.append("==== object dump start ====");
+        output.append(getStringRepresentationOfObject(exec, argument));
         output.append("\n");
-        output.append(getDirMessageForObject(exec, argument));
         output.append("==== object dump end ====");
         output.append("\n");
     }
